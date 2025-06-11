@@ -46,7 +46,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
 
-    implementation("androidx.datastore:datastore-preferences:1.1.7")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
