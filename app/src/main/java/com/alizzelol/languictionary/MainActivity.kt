@@ -26,7 +26,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TranslateView(viewModel)
-            //MyView()
             //LanguagesView()
         }
     }
