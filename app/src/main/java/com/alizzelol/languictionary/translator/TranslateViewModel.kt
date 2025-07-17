@@ -76,10 +76,4 @@ class TranslateViewModel : ViewModel() {
             }
     }
 
-
-
-
-
-
-
 }

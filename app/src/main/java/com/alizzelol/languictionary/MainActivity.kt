@@ -14,7 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.alizzelol.languictionary.languages.LanguagesView
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.alizzelol.languictionary.translator.TranslateView
 import com.alizzelol.languictionary.translator.TranslateViewModel
 
@@ -22,24 +25,35 @@ import com.alizzelol.languictionary.translator.TranslateViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModel : TranslateViewModel by viewModels()
         enableEdgeToEdge()
         setContent {
-            TranslateView(viewModel)
-            //LanguagesView()
-        }
-    }
-}
+            // El NavController gestiona la pila de back y la navegación
+            val navController = rememberNavController()
 
-@Composable
-fun MyView(){
-    Column (
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        Text(text = stringResource(id = R.string.title), fontWeight = FontWeight.Bold)
-        Text(text = stringResource(id = R.string.subtitle))
+            // El NavHost es el contenedor de nuestras pantallas navegables
+            NavHost(
+                navController = navController,
+                startDestination = "welcome_screen" // Define la pantalla de inicio
+            ) {
+                // Define la ruta para la pantalla de bienvenida
+                composable("welcome_screen") {
+                    WelcomeScreen(
+                        // Cuando se presiona el botón, navega a la pantalla del traductor
+                        onNavigateToTranslator = {
+                            navController.navigate("translate_screen")
+                        }
+                    )
+                }
+
+                // Define la ruta para la pantalla del traductor
+                composable("translate_screen") {
+                    // Obtiene el ViewModel aquí. Usamos viewModel() en lugar de by viewModels()
+                    // cuando el ViewModel se utiliza dentro de un Composable en el NavGraph.
+                    val viewModel: TranslateViewModel = viewModel()
+                    TranslateView(viewModel)
+                }
+            }
+        }
     }
 }
 

@@ -48,6 +48,7 @@ dependencies {
 
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("com.google.mlkit:translate:17.0.3")
+    implementation ("androidx.navigation:navigation-compose:2.7.7")
 
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
