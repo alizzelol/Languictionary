@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kapt)
 }
 
 android {
@@ -49,6 +50,12 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("com.google.mlkit:translate:17.0.3")
     implementation ("androidx.navigation:navigation-compose:2.7.7")
+
+    // Room components
+    implementation ("androidx.room:room-runtime:2.6.1") // O la versión más reciente
+    kapt ("androidx.room:room-compiler:2.6.1") // O la versión más reciente (para Kotlin Annotation Processing)
+    // Para Room con Coroutines/Flow (útil para el ViewModel)
+    implementation ("androidx.room:room-ktx:2.6.1") // O la versión más reciente
 
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
