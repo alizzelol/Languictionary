@@ -57,6 +57,15 @@ dependencies {
     // Para Room con Coroutines/Flow (útil para el ViewModel)
     implementation ("androidx.room:room-ktx:2.6.1") // O la versión más reciente
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
+
+    // Material Design 3
+    implementation(platform("androidx.compose:compose-bom:2024.04.00"))
+    implementation("androidx.compose.material3:material3")
+
+    // Icons Extended 
+    implementation("androidx.compose.material:material-icons-extended")
+
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)

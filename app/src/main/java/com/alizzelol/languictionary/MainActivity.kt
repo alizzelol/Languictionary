@@ -4,6 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -37,10 +42,24 @@ class MainActivity : ComponentActivity() {
 
                 // Define la ruta para la pantalla del traductor
                 composable("translate_screen") {
-                    // Obtiene el ViewModel aquí. Usamos viewModel() en lugar de by viewModels()
-                    // cuando el ViewModel se utiliza dentro de un Composable en el NavGraph.
-                    val viewModel: TranslateViewModel = viewModel()
-                    TranslateView(viewModel)
+                    // Asegúrate de que appContainer esté disponible aquí.
+                    // Necesitarás la línea 'val appContainer = (application as LanguictionaryApplication).container'
+                    // en tu onCreate, antes de setContent.
+                    val appContainer = (application as LanguictionaryApplication).container // Repite o asegura que esté accesible
+
+                    // 2. Inicializar el ViewModel usando el factory que le proporciona el repositorio
+                    val translateViewModel: TranslateViewModel = viewModel(
+                        factory = TranslateViewModel.provideFactory(appContainer.dictionaryRepository)
+                    )
+                    Scaffold( // Envuelve TranslateView en un Scaffold para el FloatingActionButton
+                        floatingActionButton = {
+                            FloatingActionButton(onClick = { navController.navigate("dictionary_entries_screen") }) {
+                                Icon(Icons.Default.History, contentDescription = "Ver tarjetas de estudio")
+                            }
+                        }
+                    ) { paddingValues ->
+                        TranslateView(translateViewModel, paddingValues)
+                    }
                 }
             }
         }

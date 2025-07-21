@@ -5,41 +5,26 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-/**
- * Clase abstracta que representa la base de datos Room de la aplicación.
- * Es el punto de acceso principal para interactuar con los DAOs y la base de datos subyacente.
- */
-@Database(entities = [SavedTranslation::class], version = 1, exportSchema = false)
+@Database(entities = [DictionaryEntry::class], version = 2, exportSchema = false) // ¡Versión 2 y nueva entidad!
 abstract class AppDatabase : RoomDatabase() {
 
-    /**
-     * Retorna una instancia del DAO para las operaciones con SavedTranslation.
-     */
-    abstract fun savedTranslationDao(): SavedTranslationDao
+    abstract fun dictionaryDao(): DictionaryDao // Nuevo método para el nuevo DAO
 
     companion object {
-        @Volatile // Asegura que la instancia de la base de datos sea siempre la misma y no se cachee incorrectamente
+        @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        /**
-         * Obtiene la única instancia de la base de datos.
-         * Si la instancia no existe, la crea de forma segura en un bloque sincronizado.
-         * @param context El contexto de la aplicación para construir la base de datos.
-         * @return La instancia de AppDatabase.
-         */
         fun getDatabase(context: Context): AppDatabase {
-            // Si INSTANCE no es nula, entonces se ha inicializado y se devuelve.
-            // Si es nula, entonces se inicializa en un bloque sincronizado.
-            return INSTANCE ?: synchronized(this) { // Bloquea este código para que solo un hilo pueda ejecutarlo a la vez
+            return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext, // Usa el contexto de la aplicación para evitar fugas de memoria
+                    context.applicationContext,
                     AppDatabase::class.java,
-                    "languictionary_database" // Nombre del archivo de la base de datos en el dispositivo
+                    "languictionary_database"
                 )
-                    // .fallbackToDestructiveMigration() // Opcional: si cambias la versión y no tienes migraciones, esto borra y recrea la DB
+                    .fallbackToDestructiveMigration() // ¡Añade esto! Borrará y recreará la DB en cambios de esquema
                     .build()
                 INSTANCE = instance
-                instance // Retorna la instancia
+                instance
             }
         }
     }
